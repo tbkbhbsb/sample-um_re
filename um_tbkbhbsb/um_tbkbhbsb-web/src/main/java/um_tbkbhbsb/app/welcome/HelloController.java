@@ -2,7 +2,6 @@ package um_tbkbhbsb.app.welcome;
 
 import java.text.DateFormat;
 import java.util.Date;
-import java.util.List;
 import java.util.Locale;
 
 import javax.inject.Inject;
@@ -10,6 +9,10 @@ import javax.inject.Inject;
 import org.dozer.Mapper;
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
+import org.springframework.data.domain.Page;
+import org.springframework.data.domain.Pageable;
+import org.springframework.data.domain.Sort.Direction;
+import org.springframework.data.web.PageableDefault;
 import org.springframework.security.crypto.password.PasswordEncoder;
 import org.springframework.stereotype.Controller;
 import org.springframework.ui.Model;
@@ -24,6 +27,7 @@ import um_tbkbhbsb.domain.model.RoleTable;
 import um_tbkbhbsb.domain.model.UserTable;
 import um_tbkbhbsb.domain.repository.RoleTableRepository;
 import um_tbkbhbsb.domain.repository.UserTableRepository;
+import um_tbkbhbsb.domain.service.SearchService;
 
 /**
  * Handles requests for the application home page.
@@ -45,6 +49,10 @@ public class HelloController {
     
     @Inject
     RoleTableRepository roleTableRepository;
+    
+    @Inject
+    SearchService searchService;
+    
 
     /**
      * Simply selects the home view to render by returning its name.
@@ -167,7 +175,18 @@ public class HelloController {
   public String searchFinish(
   		@Validated SearchForm form,
           BindingResult result,
+          @PageableDefault( // (1)
+                  page = 0,    // (2)
+                  size = 5,   // (3)
+                  direction = Direction.DESC,  // (4)
+                  sort = {     // (5)
+                      "userId",
+                      }
+                  )
+          Pageable pageable,
           Model model) {
+	  
+	  Page<SearchForm> page = searchService.searchUser(form, pageable);
       
 //      model.addAttribute("SearchResult", users);
 //      
@@ -177,14 +196,39 @@ public class HelloController {
 //      logger.info(userTable.toString());
 //      logger.info(roleTable.toString());
 
-      List<SearchForm> resultList = userTableRepository.searchUserByAndQuery(form);
+//      List<SearchForm> resultList = userTableRepository.searchUserByAndQuery(form);
 //      List<RoleTable> roleTables = roleTableRepository.searchUserByOrQuery(roleTable);
       
 //      for (UserTable userTable : userTables) {
 //		logger.info(userTable.toString());
 //	}
       
-      model.addAttribute("SearchResult", resultList);
+//      model.addAttribute("SearchResult", resultList);
+      model.addAttribute("page", page);
+      model.addAttribute("criteria", form);
+      
+      return "user/searchList";
+  }
+  
+  @RequestMapping(value="/user/search")
+  public String searchNextPage(
+  		@Validated SearchForm form,
+          BindingResult result,
+          @PageableDefault( // (1)
+                  page = 0,    // (2)
+                  size = 5,   // (3)
+                  direction = Direction.DESC,  // (4)
+                  sort = {     // (5)
+                      "userId",
+                      }
+                  )
+          Pageable pageable,
+          Model model) {
+	  
+	  Page<SearchForm> page = searchService.searchUser(form, pageable);
+      
+      model.addAttribute("page", page);
+      model.addAttribute("criteria", form);
       
       return "user/searchList";
   }

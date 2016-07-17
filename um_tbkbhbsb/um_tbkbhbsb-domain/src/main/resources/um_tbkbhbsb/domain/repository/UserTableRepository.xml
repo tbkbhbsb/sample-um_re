@@ -56,61 +56,78 @@
 				#{password},
 				#{state},
 				#{lastUpdate}
-	        	)
-	           
-    ]]>
+	        	) 
+    	]]>
 
 	</insert>
 
-<!-- UserTable JOIN RoleTable ON UserTable.userId = RoleTable.userId -->
-<!-- UserTable LEFT OUTER JOIN RoleTable USING(UserTable.userId) -->
+	<!-- UserTable JOIN RoleTable ON UserTable.userId = RoleTable.userId -->
+	<!-- UserTable LEFT OUTER JOIN RoleTable USING(UserTable.userId) -->
+
+<sql id="findPageByAndQuery">
+        <where>
+			<if test="criteria.userId != null and criteria.userId !=''">
+				AND
+				UserTable.userId = #{criteria.userId}
+			</if>
+			<if test="criteria.name != null and criteria.name !=''">
+				AND
+				name = #{criteria.name}
+			</if>
+			<if test="criteria.birthday != null and criteria.birthday !=''">
+				AND
+				birthday = #{criteria.birthday}
+			</if>
+			<if test="criteria.address != null and criteria.address !=''">
+				AND
+				address = #{criteria.address}
+			</if>
+			<if test="criteria.tel != null and criteria.tel !=''">
+				AND
+				tel = #{criteria.tel}
+			</if>
+			<if test="criteria.state != null and criteria.state !=''">
+				AND
+				state = #{criteria.state}
+			</if>
+			<if test="criteria.role != null and criteria.role !=''">
+				AND
+				role = #{criteria.role}
+			</if>
+		</where>
+    </sql>
 
 	<select id="searchUserByAndQuery" parameterType="um_tbkbhbsb.domain.Form.SearchForm"
 		resultType="um_tbkbhbsb.domain.Form.SearchForm">
-		
-        SELECT
-        	UserTable.userId,
+
+		SELECT
+			UserTable.userId,
 			name,
 			birthday,
 			address,
 			tel,
 			state,
 			role
-        FROM
-            UserTable JOIN RoleTable ON UserTable.userId = RoleTable.userId
-        <where>
-        	<if test="userId != null and userId !=''">
-	        	AND
-	        	UserTable.userId = #{userId}
-    		</if>
-    		<if test="name != null and name !=''">
-	        	AND
-	        	name = #{name} 
-    		</if>
-    		<if test="birthday != null and birthday !=''">
-	        	AND
-	        	birthday = #{birthday}
-    		</if>
-    		<if test="address != null and address !=''">
-	        	AND
-	        	address = #{address}
-    		</if>
-    		<if test="tel != null and tel !=''">
-	        	AND
-	        	tel = #{tel}
-    		</if>
-    		<if test="state != null and state !=''">
-	        	AND
-	        	state = #{state}
-    		</if>
-    		<if test="role != null  and role !=''">
-	        	AND
-	        	role = #{role}
-    		</if>
-    	</where>
-    ORDER BY
-        UserTable.userId
-    
+		FROM
+			UserTable JOIN RoleTable ON UserTable.userId = RoleTable.userId
+		
+		<include refid="findPageByAndQuery" />
+		
+		ORDER BY
+			UserTable.userId
+		LIMIT
+			#{pageable.pageSize} /* (4) */
+		OFFSET
+			#{pageable.offset} /* (4) */
+
 	</select>
+	
+	<select id="countUserByAndQuery" parameterType="um_tbkbhbsb.domain.Form.SearchForm" resultType="_long">
+        SELECT
+            COUNT(*)
+        FROM
+			UserTable JOIN RoleTable ON UserTable.userId = RoleTable.userId
+		<include refid="findPageByAndQuery" />
+    </select>
 
 </mapper>
