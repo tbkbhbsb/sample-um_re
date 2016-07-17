@@ -67,8 +67,7 @@
 
 	<select id="searchUserByAndQuery" parameterType="um_tbkbhbsb.domain.Form.SearchForm"
 		resultType="um_tbkbhbsb.domain.Form.SearchForm">
-	
-    <![CDATA[
+		
         SELECT
         	UserTable.userId,
 			name,
@@ -79,16 +78,39 @@
 			role
         FROM
             UserTable JOIN RoleTable ON UserTable.userId = RoleTable.userId
-        WHERE
-            UserTable.userId = #{userId} OR
-            name = #{name} OR
-			birthday = #{birthday} OR
-			address = #{address} OR
-			tel = #{tel} OR
-			state = #{state} OR
-			role = #{role}
-    ]]>
-
+        <where>
+        	<if test="userId != null and userId !=''">
+	        	AND
+	        	UserTable.userId = #{userId}
+    		</if>
+    		<if test="name != null and name !=''">
+	        	AND
+	        	name = #{name} 
+    		</if>
+    		<if test="birthday != null and birthday !=''">
+	        	AND
+	        	birthday = #{birthday}
+    		</if>
+    		<if test="address != null and address !=''">
+	        	AND
+	        	address = #{address}
+    		</if>
+    		<if test="tel != null and tel !=''">
+	        	AND
+	        	tel = #{tel}
+    		</if>
+    		<if test="state != null and state !=''">
+	        	AND
+	        	state = #{state}
+    		</if>
+    		<if test="role != null  and role !=''">
+	        	AND
+	        	role = #{role}
+    		</if>
+    	</where>
+    ORDER BY
+        UserTable.userId
+    
 	</select>
 
 </mapper>
