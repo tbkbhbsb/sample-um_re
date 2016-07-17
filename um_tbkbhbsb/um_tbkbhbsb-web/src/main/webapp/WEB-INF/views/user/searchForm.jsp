@@ -1,8 +1,7 @@
 <div id="wrapper">
 	<h1>ユーザ登録</h1>
 	<form:form modelAttribute="SearchForm"
-		action="${pageContext.request.contextPath}/user/search"
-		method="post">
+		action="${pageContext.request.contextPath}/user/search" method="post">
 
 		<table>
 			<tr>
@@ -32,22 +31,26 @@
 			</tr>
 			<tr>
 				<td><form:label path="role">権限:</form:label></td>
-				<td><form:checkbox path="role" value="ADMIN" label="ADMIN" /></td>
-				<td><form:checkbox path="role" value="USER" label="USER" /></td>
+				<td><form:select path="role">
+						<option value="">----</option>
+						<option value="USER">USER</option>
+						<option value="ADMIN">ADMIN</option>
+					</form:select></td>
 				<td><form:errors path="role" /></td>
 			</tr>
 			<tr>
-				<td><form:label path="password">パスワード:</form:label></td>
-				<td><form:input path="password" /></td>
-				<td><form:errors path="password" /></td>
+				<td><form:label path="state">状態:</form:label></td>
+				<td><form:select path="state">
+						<option value="">----</option>
+						<option value="ACTV">ACTV</option>
+						<option value="INIT">INIT</option>
+						<option value="RMVD">RMVD</option>
+					</form:select></td>
+				<td><form:errors path="role" /></td>
 			</tr>
 			<tr>
-				<td><form:label path="passwordConfirm">パスワード確認:</form:label></td>
-				<td><form:input path="passwordConfirm" /></td>
-				<td><form:errors path="passwordConfirm" /></td>
-			</tr>
 			<tr>
-				<td><button type="submit" name="confirm" value="">登録</button></td>
+				<td><button type="submit" name="finish" value="">検索</button></td>
 			</tr>
 		</table>
 	</form:form>

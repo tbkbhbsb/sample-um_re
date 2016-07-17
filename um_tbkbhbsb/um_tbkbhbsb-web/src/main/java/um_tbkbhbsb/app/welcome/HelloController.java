@@ -160,11 +160,11 @@ public class HelloController {
       
       model.addAttribute("SearchForm", form);
 
-      return "user/SearchForm";
+      return "user/searchForm";
   }
   
   @RequestMapping(value="/user/search", params="finish")
-  public String registerFinish(
+  public String searchFinish(
   		@Validated SearchForm form,
           BindingResult result,
           Model model) {
@@ -177,12 +177,14 @@ public class HelloController {
 //      logger.info(userTable.toString());
 //      logger.info(roleTable.toString());
 
-      List<UserTable> userTables = userTableRepository.searchUserByAndQuery(form);
+      List<SearchForm> resultList = userTableRepository.searchUserByAndQuery(form);
 //      List<RoleTable> roleTables = roleTableRepository.searchUserByOrQuery(roleTable);
       
-      for (UserTable userTable : userTables) {
-		logger.info(userTable.toString());
-	}
+//      for (UserTable userTable : userTables) {
+//		logger.info(userTable.toString());
+//	}
+      
+      model.addAttribute("SearchResult", resultList);
       
       return "user/searchList";
   }

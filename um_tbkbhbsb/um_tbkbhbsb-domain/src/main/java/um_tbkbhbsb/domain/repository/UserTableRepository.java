@@ -11,6 +11,6 @@ public interface UserTableRepository {
 
 	void createOneUser(UserTable userTable);
 
-	List<UserTable> searchUserByAndQuery(SearchForm searchForm);
+	List<SearchForm> searchUserByAndQuery(SearchForm searchForm);
 
 }

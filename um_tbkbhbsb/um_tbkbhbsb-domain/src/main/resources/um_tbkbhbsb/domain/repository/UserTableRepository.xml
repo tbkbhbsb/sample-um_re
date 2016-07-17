@@ -62,34 +62,33 @@
 
 	</insert>
 
-
+<!-- UserTable JOIN RoleTable ON UserTable.userId = RoleTable.userId -->
+<!-- UserTable LEFT OUTER JOIN RoleTable USING(UserTable.userId) -->
 
 	<select id="searchUserByAndQuery" parameterType="um_tbkbhbsb.domain.Form.SearchForm"
-		resultType="UserTable">
+		resultType="um_tbkbhbsb.domain.Form.SearchForm">
 	
     <![CDATA[
         SELECT
-        	userId,
+        	UserTable.userId,
 			name,
 			birthday,
 			address,
 			tel,
-			password,
 			state,
-			lastUpdate
+			role
         FROM
             UserTable JOIN RoleTable ON UserTable.userId = RoleTable.userId
         WHERE
-            userId = #{userId} AND
-            name = #{name} AND
-			birthday = #{birthday} AND
-			address = #{address} AND
-			tel = #{tel} AND
-			state = #{state} AND
+            UserTable.userId = #{userId} OR
+            name = #{name} OR
+			birthday = #{birthday} OR
+			address = #{address} OR
+			tel = #{tel} OR
+			state = #{state} OR
 			role = #{role}
     ]]>
 
 	</select>
-
 
 </mapper>
