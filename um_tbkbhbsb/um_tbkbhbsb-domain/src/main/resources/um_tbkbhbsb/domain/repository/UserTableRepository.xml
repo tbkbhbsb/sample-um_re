@@ -1,0 +1,95 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<!DOCTYPE mapper PUBLIC
+    "-//mybatis.org//DTD Mapper 3.0//EN"
+    "http://mybatis.org/dtd/mybatis-3-mapper.dtd">
+
+<mapper namespace="um_tbkbhbsb.domain.repository.UserTableRepository">
+
+	<!-- <resultMap type="UserTable" id="UserTableResultMap"> <id column="userId" 
+		property="userId"/> <result column="name" property="name" /> <result column="birthday" 
+		property="birthday" /> <result column="address" property="address" /> <result 
+		column="tel" property="tel" /> <result column="password" property="password" 
+		/> <result column="state" property="state" /> </resultMap> -->
+	<!-- resultMap="UserTableResultMap" -->
+
+
+	<select id="findOneByUserId" parameterType="String" resultType="UserTable">
+	
+    <![CDATA[
+        SELECT
+        	userId,
+			name,
+			birthday,
+			address,
+			tel,
+			password,
+			state,
+			lastUpdate
+        FROM
+            UserTable
+        WHERE
+            userId = #{userId}
+    ]]>
+
+	</select>
+
+	<insert id="createOneUser" parameterType="UserTable">
+		<![CDATA[
+	        INSERT INTO UserTable
+	        	(
+	        	userId,
+				name,
+				birthday,
+				address,
+				tel,
+				password,
+				state,
+				lastUpdate
+				)
+	        VALUES
+	        	(
+	        	#{userId},
+				#{name},
+				#{birthday},
+				#{address},
+				#{tel},
+				#{password},
+				#{state},
+				#{lastUpdate}
+	        	)
+	           
+    ]]>
+
+	</insert>
+
+
+
+	<select id="searchUserByAndQuery" parameterType="um_tbkbhbsb.domain.Form.SearchForm"
+		resultType="UserTable">
+	
+    <![CDATA[
+        SELECT
+        	userId,
+			name,
+			birthday,
+			address,
+			tel,
+			password,
+			state,
+			lastUpdate
+        FROM
+            UserTable JOIN RoleTable ON UserTable.userId = RoleTable.userId
+        WHERE
+            userId = #{userId} AND
+            name = #{name} AND
+			birthday = #{birthday} AND
+			address = #{address} AND
+			tel = #{tel} AND
+			state = #{state} AND
+			role = #{role}
+    ]]>
+
+	</select>
+
+
+</mapper>
