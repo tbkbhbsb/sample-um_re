@@ -1,33 +1,49 @@
+<div id="wrapper">
 <h1>登録情報確認</h1>
-<form:form modelAttribute="deleteForm"
-    action="${pageContext.request.contextPath}/user/deleteConfirm">
+<form:form modelAttribute="DeleteForm"
+    action="${pageContext.request.contextPath}/user/delete">
 
-<form:label path="userId">ユーザID:</form:label>
-        ${f:h(deleteForm.userId)}
-        <form:hidden path="userId" />
+<table>
+			<tr>
+				<td><form:label path="userId">ユーザID:</form:label></td>
+				<td>${f:h(DeleteForm.userId)}</td>
+				<td><form:hidden path="userId" /></td>
+			</tr>
+			<tr>
+				<td><form:label path="name">ユーザ名:</form:label></td>
+				<td>${f:h(DeleteForm.name)}</td>
+				<td><form:hidden path="name" /></td>
+			</tr>
+			<tr>
+				<td><form:label path="birthday">生年月日:</form:label></td>
+				<td>${f:h(DeleteForm.birthday)}</td>
+				<td><form:hidden path="birthday" /></td>
+			</tr>
+			<tr>
+				<td><form:label path="address">住所:</form:label></td>
+				<td>${f:h(DeleteForm.address)}</td>
+				<td><form:hidden path="address" />
+				<td>
+			</tr>
+			<tr>
+				<td><form:label path="tel">電話番号:</form:label></td>
+				<td>${f:h(DeleteForm.tel)}</td>
+				<td><form:hidden path="tel" /></td>
+			</tr>
+			<tr>
+				<td><form:label path="role">権限:</form:label></td>
+				<td>${f:h(DeleteForm.role)}</td>
+				<td><form:hidden path="role" /></td>
+			</tr>
+			<tr>
+				<td>
+				<form action="${pageContext.request.contextPath}/user/search">
+				<button type="submit" name="form" value="">キャンセル</button>
+				</form>
+				</td>
+				<td><button type="submit" name="finish" value="">確認</button></td>
+			</tr>
 
-    <br>
-        <form:label path="Name">ユーザ名:</form:label>
-        ${f:h(deleteForm.Name}
-        <form:hidden path="Name" />
-    <br>
-        <form:label path="dateOfBirth">生年月日:</form:label>
-        ${f:h(deleteForm.dateOfBirth)}
-        <form:hidden path="dateOfBirth" />
-    <br>
-        <form:label path="address">住所:</form:label>
-        ${f:h(deleteForm.address)}
-        <form:hidden path="address" />
-    <br>
-        <form:label path="phoneNumber">電話番号:</form:label>
-        ${f:h(deleteForm.phoneNumber)}
-        <form:hidden path="phoneNumber" />
-    <br>
-        <form:label path="authority">権限:</form:label>
-        ${f:h(deleteForm.authority)}
-        <form:hidden path="authority" />
-    <br>
-
-    <input type="submit" name="redo" value="Back" /> <!-- (2) -->
-    <input type="submit" value="delete" /> <!-- (3) -->
+		</table>
 </form:form>
+</div>

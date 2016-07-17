@@ -11,5 +11,7 @@ public interface RoleTableRepository {
 	void createOneUser(RoleTable roleTable);
 
 	List<RoleTable> searchUserByOrQuery(RoleTable roleTable);
+	
+	void updateOneUser(RoleTable roleTable);
 
 }

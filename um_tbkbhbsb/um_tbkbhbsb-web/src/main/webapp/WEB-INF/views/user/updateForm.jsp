@@ -1,39 +1,92 @@
-<h1>Abc Create Form</h1>
-<form:form modelAttribute="updateForm"
-    action="${pageContext.request.contextPath}/user/registerConfirm">
-        <form:label path="userId">ユーザID:</form:label>
-        ${f:h(updateForm.userId)}
-        <form:hidden path="userId" />
-    <br>
-        <form:label path="Name">ユーザ名:</form:label>
-        <form:input path="Name" />
-        <form:errors path="Name" />
-    <br>
-        <form:label path="dateOfBirth">生年月日:</form:label>
-        <form:input path="dateOfBirth" />
-        <form:errors path="dateOfBirth" />
-    <br>
-        <form:label path="address">住所:</form:label>
-        <form:input path="address" />
-        <form:errors path="address" />
-    <br>
-        <form:label path="phoneNumber">電話番号:</form:label>
-        <form:input path="phoneNumber" />
-        <form:errors path="phoneNumber" />
-    <br>
-        <form:label path="authority">権限:</form:label>
-        <input type="checkbox" value="ADMIN">ADMIN</input>
-        <input type="checkbox" value="USER">USER</input>
-        <form:errors path="authority" />
-    <br>
-        <form:label path="password">パスワード:</form:label>
-        <form:input path="password" />
-        <form:errors path="password" />
-    <br>
-        <form:label path="passwordConfirm">パスワード確認:</form:label>
-        <form:input path="passwordConfirm" />
-        <form:errors path="passwordConfirm" />
-    <br>
+<div id="wrapper">
+	<h1>ユーザ登録</h1>
+	<form:form modelAttribute="UpdateForm"
+		action="${pageContext.request.contextPath}/user/update" method="post">
 
-    <input type="submit" name="update" value="update" /> <!-- (1) -->
-</form:form>
+		<table>
+			<tr>
+				<td><form:label path="userId">ユーザID:</form:label></td>
+				<td>${f:h(userId)}</td>
+				<td><form:errors path="userId" /></td>
+			</tr>
+			<tr>
+				<td><form:label path="name">ユーザ名:</form:label></td>
+				<td><form:input path="name" value="${name}" /></td>
+				<td><form:errors path="name" /></td>
+			</tr>
+			<tr>
+				<td><form:label path="birthday">生年月日:</form:label></td>
+				<td><form:input path="birthday" value="${birthday}" /></td>
+				<td><form:errors path="birthday" /></td>
+			</tr>
+			<tr>
+				<td><form:label path="address">住所:</form:label></td>
+				<td><form:input path="address" value="${address}" /></td>
+				<td><form:errors path="address" /></td>
+			</tr>
+			<tr>
+				<td><form:label path="tel">電話番号:</form:label></td>
+				<td><form:input path="tel" value="${tel}" /></td>
+				<td><form:errors path="tel" /></td>
+			</tr>
+			<tr>
+				<td><form:label path="role">権限:</form:label></td>
+				<td><form:select path="role">
+						<c:choose>
+							<c:when test="${role = USER}">
+								<option value="">----</option>
+								<option value="USER" selected>USER</option>
+								<option value="ADMIN">ADMIN</option>
+							</c:when>
+							<c:when test="${role = ADMIN}">
+								<option value="">----</option>
+								<option value="USER">USER</option>
+								<option value="ADMIN" selected>ADMIN</option>
+							</c:when>
+							<c:otherwise>
+								<option value="">----</option>
+								<option value="USER">USER</option>
+								<option value="ADMIN">ADMIN</option>
+							</c:otherwise>
+						</c:choose>
+					</form:select></td>
+				<td><form:errors path="role" /></td>
+			</tr>
+			<tr>
+				<td><form:label path="state">状態:</form:label></td>
+				<td><form:select path="state">
+						<c:choose>
+							<c:when test="${state = INIT}">
+								<option value="">----</option>
+								<option value="INIT" selected>INIT</option>
+								<option value="ACTV">ACTV</option>
+								<option value="ACTV">RMVD</option>
+							</c:when>
+							<c:when test="${state = ACTV}">
+								<option value="">----</option>
+								<option value="INIT">INIT</option>
+								<option value="ACTV" selected>ACTV</option>
+								<option value="ACTV">RMVD</option>
+							</c:when>
+							<c:when test="${state = RMVD}">
+								<option value="">----</option>
+								<option value="INIT">INIT</option>
+								<option value="ACTV">ACTV</option>
+								<option value="ACTV" selected>RMVD</option>
+							</c:when>
+							<c:otherwise>
+								<option value="">----</option>
+								<option value="INIT">INIT</option>
+								<option value="ACTV">ACTV</option>
+								<option value="ACTV">RMVD</option>
+							</c:otherwise>
+						</c:choose>
+					</form:select></td>
+				<td><form:errors path="role" /></td>
+			</tr>
+			<tr>
+				<td><button type="submit" name="confirm" value="">更新</button></td>
+			</tr>
+		</table>
+	</form:form>
+</div>

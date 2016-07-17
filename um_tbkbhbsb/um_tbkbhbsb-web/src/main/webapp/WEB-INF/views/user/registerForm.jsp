@@ -39,7 +39,7 @@
 				</form:select></td>
 				<td><form:errors path="role" /></td>
 			</tr>
-			<tr>
+		<%-- 	<tr>
 				<td><form:label path="state">状態:</form:label></td>
 				<td><form:select path="state">
 					<option value="">----</option>
@@ -48,7 +48,7 @@
                     <option value="ACTV">RMVD</option>
 				</form:select></td>
 				<td><form:errors path="role" /></td>
-			</tr>
+			</tr> --%>
 			<tr>
 				<td><button type="submit" name="finish" value="">検索</button></td>
 			</tr>

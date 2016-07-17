@@ -21,5 +21,7 @@ public interface UserTableRepository {
 	
 	long countUserByAndQuery(
 			@Param("criteria") SearchForm criteria);
+	
+	void updateOneUser(UserTable userTable);
 
 }

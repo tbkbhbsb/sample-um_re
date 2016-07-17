@@ -1,33 +1,47 @@
-<h1>登録情報確認</h1>
-<form:form modelAttribute="updateForm"
-    action="${pageContext.request.contextPath}/user/updateConfirm">
+<div id="wrapper">
+	<h1>更新情報確認</h1>
+	<form:form modelAttribute="UpdateForm"
+		action="${pageContext.request.contextPath}/user/update">
 
-<form:label path="userId">ユーザID:</form:label>
-        ${f:h(updateForm.userId)}
-        <form:hidden path="userId" />
+		<table>
+			<tr>
+				<td><form:label path="userId">ユーザID:</form:label></td>
+				<td>${f:h(UpdateForm.userId)}</td>
+				<td><form:hidden path="userId" /></td>
+			</tr>
+			<tr>
+				<td><form:label path="name">ユーザ名:</form:label></td>
+				<td>${f:h(UpdateForm.name)}</td>
+				<td><form:hidden path="name" /></td>
+			</tr>
+			<tr>
+				<td><form:label path="birthday">生年月日:</form:label></td>
+				<td>${f:h(UpdateForm.birthday)}</td>
+				<td><form:hidden path="birthday" /></td>
+			</tr>
+			<tr>
+				<td><form:label path="address">住所:</form:label></td>
+				<td>${f:h(UpdateForm.address)}</td>
+				<td><form:hidden path="address" />
+				<td>
+			</tr>
+			<tr>
+				<td><form:label path="tel">電話番号:</form:label></td>
+				<td>${f:h(UpdateForm.tel)}</td>
+				<td><form:hidden path="tel" /></td>
+			</tr>
+			<tr>
+				<td><form:label path="role">権限:</form:label></td>
+				<td>${f:h(UpdateForm.role)}</td>
+				<td><form:hidden path="role" /></td>
+			</tr>
+			<tr>
+				<td><button type="submit" name="form" value="">キャンセル</button></td>
+				<td><button type="submit" name="finish" value="">確認</button></td>
+			</tr>
 
-    <br>
-        <form:label path="Name">ユーザ名:</form:label>
-        ${f:h(updateForm.Name}
-        <form:hidden path="Name" />
-    <br>
-        <form:label path="dateOfBirth">生年月日:</form:label>
-        ${f:h(updateForm.dateOfBirth)}
-        <form:hidden path="dateOfBirth" />
-    <br>
-        <form:label path="address">住所:</form:label>
-        ${f:h(updateForm.address)}
-        <form:hidden path="address" />
-    <br>
-        <form:label path="phoneNumber">電話番号:</form:label>
-        ${f:h(updateForm.phoneNumber)}
-        <form:hidden path="phoneNumber" />
-    <br>
-        <form:label path="authority">権限:</form:label>
-        ${f:h(updateForm.authority)}
-        <form:hidden path="authority" />
-    <br>
-
-    <input type="submit" name="redo" value="Back" /> <!-- (2) -->
-    <input type="submit" value="update" /> <!-- (3) -->
-</form:form>
+		</table>
+		<form:hidden path="state" value="${f:h(UpdateForm.state)}" />
+		<form:hidden path="password" value="${f:h(UpdateForm.password)}" />
+	</form:form>
+</div>

@@ -5,14 +5,6 @@
 
 <mapper namespace="um_tbkbhbsb.domain.repository.UserTableRepository">
 
-	<!-- <resultMap type="UserTable" id="UserTableResultMap"> <id column="userId" 
-		property="userId"/> <result column="name" property="name" /> <result column="birthday" 
-		property="birthday" /> <result column="address" property="address" /> <result 
-		column="tel" property="tel" /> <result column="password" property="password" 
-		/> <result column="state" property="state" /> </resultMap> -->
-	<!-- resultMap="UserTableResultMap" -->
-
-
 	<select id="findOneByUserId" parameterType="String" resultType="UserTable">
 	
     <![CDATA[
@@ -61,11 +53,8 @@
 
 	</insert>
 
-	<!-- UserTable JOIN RoleTable ON UserTable.userId = RoleTable.userId -->
-	<!-- UserTable LEFT OUTER JOIN RoleTable USING(UserTable.userId) -->
-
-<sql id="findPageByAndQuery">
-        <where>
+	<sql id="findPageByAndQuery">
+		<where>
 			<if test="criteria.userId != null and criteria.userId !=''">
 				AND
 				UserTable.userId = #{criteria.userId}
@@ -95,39 +84,55 @@
 				role = #{criteria.role}
 			</if>
 		</where>
-    </sql>
+	</sql>
 
 	<select id="searchUserByAndQuery" parameterType="um_tbkbhbsb.domain.Form.SearchForm"
 		resultType="um_tbkbhbsb.domain.Form.SearchForm">
 
 		SELECT
-			UserTable.userId,
-			name,
-			birthday,
-			address,
-			tel,
-			state,
-			role
+		UserTable.userId,
+		name,
+		birthday,
+		address,
+		tel,
+		state,
+		role
 		FROM
-			UserTable JOIN RoleTable ON UserTable.userId = RoleTable.userId
-		
+		UserTable JOIN RoleTable ON UserTable.userId = RoleTable.userId
+
 		<include refid="findPageByAndQuery" />
-		
+
 		ORDER BY
-			UserTable.userId
+		UserTable.userId
 		LIMIT
-			#{pageable.pageSize} /* (4) */
+		#{pageable.pageSize} /* (4) */
 		OFFSET
-			#{pageable.offset} /* (4) */
+		#{pageable.offset} /* (4) */
 
 	</select>
-	
-	<select id="countUserByAndQuery" parameterType="um_tbkbhbsb.domain.Form.SearchForm" resultType="_long">
-        SELECT
-            COUNT(*)
-        FROM
-			UserTable JOIN RoleTable ON UserTable.userId = RoleTable.userId
+
+	<select id="countUserByAndQuery" parameterType="um_tbkbhbsb.domain.Form.SearchForm"
+		resultType="_long">
+		SELECT
+		COUNT(*)
+		FROM
+		UserTable JOIN RoleTable ON UserTable.userId = RoleTable.userId
 		<include refid="findPageByAndQuery" />
-    </select>
+	</select>
+
+	<update id="updateOneUser" parameterType="UserTable">
+        UPDATE
+            UserTable
+        SET
+            name = #{name},
+			birthday = #{birthday},
+			address = #{address},
+			tel = #{tel},
+			state = #{state},
+			password = #{password},
+			lastUpdate = #{lastUpdate}
+        WHERE
+            userId = #{userId}
+    </update>
 
 </mapper>

@@ -23,25 +23,27 @@
 					</tr>
 				</thead>
 
-				<%-- (3) --%>
-				<c:forEach items="${page.content}" var="result"
-					varStatus="rowStatus">
-					<tr>
-						<td><input name="userId" type="radio"
-							value="${result.userId}" /></td>
-						<td>${f:h(result.userId)}</td>
-						<td>${f:h(result.name)}</td>
-						<td>${f:h(result.address)}</td>
-						<td>${f:h(result.birthday)}</td>
-						<td>${f:h(result.tel)}</td>
-						<td>${f:h(result.role)}</td>
-						<td>${f:h(result.state)}</td>
-					</tr>
-				</c:forEach>
+				<form>
+
+					<c:forEach items="${page.content}" var="result"
+						varStatus="rowStatus">
+						<tr>
+							<td><input name="userId" type="radio"
+								value="${result.userId}" /></td>
+							<td>${f:h(result.userId)}</td>
+							<td>${f:h(result.name)}</td>
+							<td>${f:h(result.address)}</td>
+							<td>${f:h(result.birthday)}</td>
+							<td>${f:h(result.tel)}</td>
+							<td>${f:h(result.role)}</td>
+							<td>${f:h(result.state)}</td>
+						</tr>
+					</c:forEach>
 				<tr>
-					<td><button type="submit" name="update" value="">更新</button></td>
+					<td><button type="submit" name="update" value="" onClick>更新</button></td>
 					<td><button type="submit" name="delete" value="">削除</button></td>
 				</tr>
+				</form>
 			</table>
 
 			<div class="paginationPart">
