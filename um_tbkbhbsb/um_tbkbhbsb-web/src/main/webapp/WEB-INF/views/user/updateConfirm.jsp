@@ -35,6 +35,12 @@
 				<td>${f:h(UpdateForm.role)}</td>
 				<td><form:hidden path="role" /></td>
 			</tr>
+			<%-- <tr>
+				<td><form:label path="role">テスト:</form:label></td>
+				<td>${f:h(UpdateForm.state)}</td>
+				<td>${f:h(UpdateForm.password)}</td>
+				<td><form:hidden path="role" /></td>
+			</tr> --%>
 			<tr>
 				<td><button type="submit" name="form" value="">キャンセル</button></td>
 				<td><button type="submit" name="finish" value="">確認</button></td>

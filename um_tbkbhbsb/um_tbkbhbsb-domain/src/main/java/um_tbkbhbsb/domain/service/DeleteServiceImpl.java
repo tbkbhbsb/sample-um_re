@@ -6,7 +6,6 @@ import java.util.Locale;
 
 import javax.inject.Inject;
 
-import org.springframework.security.crypto.password.PasswordEncoder;
 import org.springframework.stereotype.Service;
 
 import um_tbkbhbsb.domain.model.RoleTable;
@@ -15,22 +14,17 @@ import um_tbkbhbsb.domain.repository.RoleTableRepository;
 import um_tbkbhbsb.domain.repository.UserTableRepository;
 
 @Service
-public class UpdateServiceImpl implements UpdateService {
-
+public class DeleteServiceImpl implements DeleteService{
+	
 	@Inject
 	UserTableRepository userTableRepository;
-
+	
 	@Inject
 	RoleTableRepository roleTableRepository;
 
-	@Inject
-	PasswordEncoder passwordEncoder;
-
 	@Override
-	public void updateOneUser(UserTable userTable, RoleTable roleTable) {
-
-		UserTable targetUser = userTableRepository.findOneByUserId(userTable.getUserId());
-
+	public void deleteOneUser(UserTable userTable, RoleTable roleTable) {
+		
 		Locale locale = Locale.getDefault();
 		Date date = new Date();
 		DateFormat dateFormat = DateFormat.getDateTimeInstance(DateFormat.LONG, DateFormat.SHORT, locale);
@@ -38,16 +32,13 @@ public class UpdateServiceImpl implements UpdateService {
 		
 		userTable.setLastUptate(formattedDate);
 		
-		if (userTable.getPassword().isEmpty()) {
-			userTable.setPassword(targetUser.getPassword());
-			System.out.println("pass no change");
-		} else {
-			userTable.setPassword(passwordEncoder.encode(userTable.getPassword()));
-			System.out.println("pass change");
-		}
-
+		userTable.setState("RMVD");
+		
+		
+		
 		userTableRepository.updateOneUser(userTable);
 		roleTableRepository.updateOneUser(roleTable);
+		
 	}
 
 }

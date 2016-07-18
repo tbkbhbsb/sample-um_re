@@ -13,6 +13,7 @@ public class DeleteForm implements Serializable {
 	private String tel;
 	private String role;
 	private String state;
+	private String password;
 	private String lastUpdate;
 
 	public String getUserId() {
@@ -79,11 +80,21 @@ public class DeleteForm implements Serializable {
 		this.state = state;
 	}
 
+	public String getPassword() {
+		return password;
+	}
+
+	public void setPassword(String password) {
+		this.password = password;
+	}
+
 	@Override
 	public String toString() {
 		return "DeleteForm [userId=" + userId + ", name=" + name + ", birthday=" + birthday + ", address=" + address
-				+ ", tel=" + tel + ", role=" + role + ", state=" + state + ", lastUpdate=" + lastUpdate + "]";
+				+ ", tel=" + tel + ", role=" + role + ", state=" + state + ", password=" + password + ", lastUpdate="
+				+ lastUpdate + "]";
 	}
+	
 	
 	
 

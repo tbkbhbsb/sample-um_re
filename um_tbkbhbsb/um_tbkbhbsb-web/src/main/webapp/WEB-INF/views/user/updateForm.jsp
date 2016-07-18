@@ -1,13 +1,14 @@
 <div id="wrapper">
-	<h1>ユーザ登録</h1>
+	<h1>ユーザ情報更新</h1>
 	<form:form modelAttribute="UpdateForm"
 		action="${pageContext.request.contextPath}/user/update" method="post">
 
 		<table>
 			<tr>
 				<td><form:label path="userId">ユーザID:</form:label></td>
-				<td>${f:h(userId)}</td>
+				<td>${f:h(UpdateForm.userId)}</td>
 				<td><form:errors path="userId" /></td>
+				<form:hidden path="userId"/>
 			</tr>
 			<tr>
 				<td><form:label path="name">ユーザ名:</form:label></td>
@@ -33,15 +34,15 @@
 				<td><form:label path="role">権限:</form:label></td>
 				<td><form:select path="role">
 						<c:choose>
-							<c:when test="${role = USER}">
+							<c:when test="${UpdateForm.role = 'USER'}">
 								<option value="">----</option>
-								<option value="USER" selected>USER</option>
+								<option value="USER" selected="selected">USER</option>
 								<option value="ADMIN">ADMIN</option>
 							</c:when>
-							<c:when test="${role = ADMIN}">
+							<c:when test="${UpdateForm.role = 'ADMIN'}">
 								<option value="">----</option>
 								<option value="USER">USER</option>
-								<option value="ADMIN" selected>ADMIN</option>
+								<option value="ADMIN" selected="selected">ADMIN</option>
 							</c:when>
 							<c:otherwise>
 								<option value="">----</option>
@@ -52,7 +53,7 @@
 					</form:select></td>
 				<td><form:errors path="role" /></td>
 			</tr>
-			<tr>
+			<%-- <tr>
 				<td><form:label path="state">状態:</form:label></td>
 				<td><form:select path="state">
 						<c:choose>
@@ -82,7 +83,17 @@
 							</c:otherwise>
 						</c:choose>
 					</form:select></td>
-				<td><form:errors path="role" /></td>
+				<td><form:errors path="state" /></td>
+			</tr> --%>
+			<tr>
+				<td><form:label path="password">パスワード:</form:label></td>
+				<td><form:password path="password"/></td>
+				<td><form:errors path="password" /></td>
+			</tr>
+			<tr>
+				<td><form:label path="passwordConfirm">パスワード確認:</form:label></td>
+				<td><form:password path="passwordConfirm" /></td>
+				<td><form:errors path="passwordConfirm" /></td>
 			</tr>
 			<tr>
 				<td><button type="submit" name="confirm" value="">更新</button></td>

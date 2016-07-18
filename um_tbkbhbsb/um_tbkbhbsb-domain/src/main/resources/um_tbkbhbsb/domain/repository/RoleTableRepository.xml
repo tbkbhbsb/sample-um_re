@@ -49,5 +49,14 @@
     ]]>
 
 	</select>
+	
+	<update id="updateOneUser" parameterType="RoleTable">
+        UPDATE
+            RoleTable
+        SET
+            role = #{role}
+        WHERE
+            userId = #{userId}
+    </update>
 
 </mapper>

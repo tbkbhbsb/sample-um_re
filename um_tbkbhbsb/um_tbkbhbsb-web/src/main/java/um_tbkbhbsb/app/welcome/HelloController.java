@@ -5,7 +5,6 @@ import java.util.Date;
 import java.util.Locale;
 
 import javax.inject.Inject;
-
 import org.dozer.Mapper;
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
@@ -30,7 +29,9 @@ import um_tbkbhbsb.domain.model.RoleTable;
 import um_tbkbhbsb.domain.model.UserTable;
 import um_tbkbhbsb.domain.repository.RoleTableRepository;
 import um_tbkbhbsb.domain.repository.UserTableRepository;
+import um_tbkbhbsb.domain.service.DeleteService;
 import um_tbkbhbsb.domain.service.SearchService;
+import um_tbkbhbsb.domain.service.UpdateService;
 
 /**
  * Handles requests for the application home page.
@@ -54,6 +55,12 @@ public class HelloController {
 
 	@Inject
 	SearchService searchService;
+
+	@Inject
+	UpdateService updateService;
+	
+	@Inject
+	DeleteService deleteService;
 
 	/**
 	 * Simply selects the home view to render by returning its name.
@@ -206,7 +213,7 @@ public class HelloController {
 	//
 
 	@RequestMapping(value = "/user/update", params = "form")
-	public String updateForm(BindingResult result, @RequestParam("userId") String userId, Model model) {
+	public String updateForm(@RequestParam("userId") String userId, Model model) {
 		logger.info("Welcome updateForm." + "on hello controller");
 
 		UserTable userInfo = userTableRepository.findOneByUserId(userId);
@@ -215,9 +222,9 @@ public class HelloController {
 		UpdateForm updateForm = beenMapper.map(userInfo, UpdateForm.class);
 		updateForm.setRole(roleInfo.getRole());
 
-		updateForm.toString();
-
 		model.addAttribute("UpdateForm", updateForm);
+
+		logger.info(updateForm.toString());
 
 		return "user/updateForm";
 	}
@@ -226,7 +233,12 @@ public class HelloController {
 	public String updateConfirm(@Validated UpdateForm form, BindingResult result, Model model) {
 		logger.info("Welcome updateConfirm." + "on hello controller");
 
+		UserTable target = userTableRepository.findOneByUserId(form.getUserId());
+		form.setState(target.getState());
+
 		model.addAttribute("UpdateForm", form);
+
+		logger.info(form.toString());
 
 		return "user/updateConfirm";
 	}
@@ -243,8 +255,7 @@ public class HelloController {
 		logger.info(userTable.toString());
 		logger.info(roleTable.toString());
 
-		userTableRepository.updateOneUser(userTable);
-		roleTableRepository.updateOneUser(roleTable);
+		updateService.updateOneUser(userTable, roleTable);
 
 		return "user/updateFinish";
 	}
@@ -254,7 +265,7 @@ public class HelloController {
 	//
 
 	@RequestMapping(value = "/user/delete", params = "confirm")
-	public String deleteConfirm(BindingResult result, @RequestParam("userId") String userId, Model model) {
+	public String deleteConfirm(@RequestParam("userId") String userId, Model model) {
 
 		logger.info("Welcome deleteConfirm." + "on hello controller");
 
@@ -270,24 +281,16 @@ public class HelloController {
 	@RequestMapping(value = "/user/delete", params = "finish")
 	public String deleteFinish(@Validated DeleteForm form, BindingResult result, Model model, Locale locale) {
 		logger.info("Welcome deleteFinish." + "on hello controller");
-
-		Date date = new Date();
-		DateFormat dateFormat = DateFormat.getDateTimeInstance(DateFormat.LONG, DateFormat.LONG, locale);
-
-		String formattedDate = dateFormat.format(date);
-
-		form.setLastUpdate(formattedDate);
-		form.setState("RMVD");
-
-		UserTable userTable = beenMapper.map(form, UserTable.class);
-		RoleTable roleTable = beenMapper.map(form, RoleTable.class);
+		logger.info(form.toString());
+		
+		UserTable userTable = userTableRepository.findOneByUserId(form.getUserId());
+		RoleTable roleTable = roleTableRepository.findOneByUserId(form.getUserId());
 
 		logger.info(userTable.toString());
 		logger.info(roleTable.toString());
 
-		userTableRepository.updateOneUser(userTable);
-		roleTableRepository.updateOneUser(roleTable);
-
+		deleteService.deleteOneUser(userTable, roleTable);
+		
 		return "user/deleteFinish";
 	}
 

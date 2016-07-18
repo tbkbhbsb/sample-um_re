@@ -12,6 +12,7 @@ public class UpdateForm implements Serializable {
 	private String address;
 	private String tel;
 	private String role;
+	private String state;
 	private String password;
 	private String passwordConfirm;
 	private String lastUpdate;
@@ -88,11 +89,20 @@ public class UpdateForm implements Serializable {
 		this.lastUpdate = lastUpdate;
 	}
 
+	public String getState() {
+		return state;
+	}
+
+	public void setState(String state) {
+		this.state = state;
+	}
+
 	@Override
 	public String toString() {
 		return "UpdateForm [userId=" + userId + ", name=" + name + ", birthday=" + birthday + ", address=" + address
-				+ ", tel=" + tel + ", role=" + role + ", password=" + password + ", passwordConfirm=" + passwordConfirm
-				+ ", lastUpdate=" + lastUpdate + "]";
+				+ ", tel=" + tel + ", role=" + role + ", state=" + state + ", password=" + password
+				+ ", passwordConfirm=" + passwordConfirm + ", lastUpdate=" + lastUpdate + "]";
 	}
 
+	
 }

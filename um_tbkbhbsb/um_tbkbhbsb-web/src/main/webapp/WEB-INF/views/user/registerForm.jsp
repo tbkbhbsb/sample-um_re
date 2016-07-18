@@ -39,6 +39,16 @@
 				</form:select></td>
 				<td><form:errors path="role" /></td>
 			</tr>
+			<tr>
+				<td><form:label path="password">パスワード:</form:label></td>
+				<td><form:input path="password" /></td>
+				<td><form:errors path="password" /></td>
+			</tr>
+			<tr>
+				<td><form:label path="passwordConfirm">パスワード確認:</form:label></td>
+				<td><form:input path="passwordConfirm" /></td>
+				<td><form:errors path="passwordConfirm" /></td>
+			</tr>
 		<%-- 	<tr>
 				<td><form:label path="state">状態:</form:label></td>
 				<td><form:select path="state">

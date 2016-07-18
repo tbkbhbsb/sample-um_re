@@ -1,5 +1,5 @@
 <div id="wrapper">
-<h1>登録情報確認</h1>
+<h1>削除情報確認</h1>
 <form:form modelAttribute="DeleteForm"
     action="${pageContext.request.contextPath}/user/delete">
 

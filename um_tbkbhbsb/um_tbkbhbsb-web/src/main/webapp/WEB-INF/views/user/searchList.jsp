@@ -5,25 +5,61 @@
 		type="text/css" media="screen, projection">
 
 
+<script type="text/javascript">
+
+function NextSubmit(obj){
+	if (obj.neme == "update"){
+		val = document.getElementsByName("userId");
+		var userId = null;
+		for(i=0; i<test.length; i++){
+			if(test[i].checked){
+				userId = test[i].value;
+				}
+		}
+		if(userId = null){
+			window.alert("選択されていません");
+		}
+		parm = "userId"+userId
+	    href = "${pageContext.request.contextPath}/user/update?" + parm;
+	    
+	}else if(obj.name == "delete"){
+		var userId = null;
+		for(i=0; i<test.length; i++){
+			if(test[i].checked){
+				userId = test[i].value;
+				}
+		}
+		if(userId = null){
+			window.alert("選択されていません");
+		}
+		parm = "userId"+userId
+	    href = "${pageContext.request.contextPath}/user/delete?" + parm;
+	}
+	    location.href = href;
+	    /* return true; */
+	  }
+</script>
+
+
 	<%-- (2) --%>
-	<c:choose>
-		<c:when test="${page != null && page.totalPages != 0}">
+	<form:form name="ListPage" action="">
+		<c:choose>
+			<c:when test="${page != null && page.totalPages != 0}">
 
-			<table class="maintable">
-				<thead>
-					<tr>
-						<th class="no">選択</th>
-						<th class="no">ID</th>
-						<th class="no">ユーザ名</th>
-						<th class="overview">住所</th>
-						<th class="date">生年月日</th>
-						<th class="overview">電話番号</th>
-						<th class="no">権限</th>
-						<th class="no">状態</th>
-					</tr>
-				</thead>
+				<table class="maintable">
+					<thead>
+						<tr>
+							<th class="no">選択</th>
+							<th class="no">ID</th>
+							<th class="no">ユーザ名</th>
+							<th class="overview">住所</th>
+							<th class="date">生年月日</th>
+							<th class="overview">電話番号</th>
+							<th class="no">権限</th>
+							<th class="no">状態</th>
+						</tr>
+					</thead>
 
-				<form>
 
 					<c:forEach items="${page.content}" var="result"
 						varStatus="rowStatus">
@@ -39,39 +75,41 @@
 							<td>${f:h(result.state)}</td>
 						</tr>
 					</c:forEach>
-				<tr>
-					<td><button type="submit" name="update" value="" onClick>更新</button></td>
-					<td><button type="submit" name="delete" value="">削除</button></td>
-				</tr>
-				</form>
-			</table>
+					<tr>
+						<td><input type="button" name="update" value="更新"
+							onClick="NextSubmit(this)" /></td>
+						<td><input type="button" name="delete" value="削除"
+							onClick="NextSubmit(this)" /></td>
+					</tr>
 
-			<div class="paginationPart">
+				</table>
 
-				<t:pagination page="${page}" outerElementClass="pagination"
-					criteriaQuery="${f:query(criteria)}" />
+				<div class="paginationPart">
+
+					<t:pagination page="${page}" outerElementClass="pagination"
+						criteriaQuery="${f:query(criteria)}" />
 
 
-			</div>
+				</div>
 
-			<div>
-				<fmt:formatNumber value="${(page.number * page.size) + 1}" />
-				-
-				<fmt:formatNumber
-					value="${(page.number * page.size) + page.numberOfElements}" />
-			</div>
-			<div>
-				${f:h(page.number + 1) } /
-				<%-- (2) --%>
-				${f:h(page.totalPages)} Pages
-				<%-- (3) --%>
-			</div>
-			<div>
-				<fmt:formatNumber value="${page.totalElements}" />
-				results
-			</div>
+				<div>
+					<fmt:formatNumber value="${(page.number * page.size) + 1}" />
+					-
+					<fmt:formatNumber
+						value="${(page.number * page.size) + page.numberOfElements}" />
+				</div>
+				<div>
+					${f:h(page.number + 1) } /
+					<%-- (2) --%>
+					${f:h(page.totalPages)} Pages
+					<%-- (3) --%>
+				</div>
+				<div>
+					<fmt:formatNumber value="${page.totalElements}" />
+					results
+				</div>
 
-		</c:when>
-	</c:choose>
-
+			</c:when>
+		</c:choose>
+	</form:form>
 </div>
