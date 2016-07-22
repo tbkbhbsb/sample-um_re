@@ -30,6 +30,7 @@ import um_tbkbhbsb.domain.model.UserTable;
 import um_tbkbhbsb.domain.repository.RoleTableRepository;
 import um_tbkbhbsb.domain.repository.UserTableRepository;
 import um_tbkbhbsb.domain.service.DeleteService;
+import um_tbkbhbsb.domain.service.RegisterService;
 import um_tbkbhbsb.domain.service.SearchService;
 import um_tbkbhbsb.domain.service.UpdateService;
 
@@ -61,6 +62,9 @@ public class HelloController {
 	
 	@Inject
 	DeleteService deleteService;
+	
+	@Inject
+	RegisterService registerService;
 
 	/**
 	 * Simply selects the home view to render by returning its name.
@@ -124,19 +128,7 @@ public class HelloController {
 		UserTable userTable = beenMapper.map(form, UserTable.class);
 		RoleTable roleTable = beenMapper.map(form, RoleTable.class);
 
-		Date date = new Date();
-		DateFormat dateFormat = DateFormat.getDateTimeInstance(DateFormat.LONG, DateFormat.SHORT, locale);
-
-		String formattedDate = dateFormat.format(date);
-
-		userTable.setLastUptate(formattedDate);
-		userTable.setPassword(passwordEncoder.encode(userTable.getPassword()));
-
-		logger.info(userTable.toString());
-		logger.info(roleTable.toString());
-
-		userTableRepository.createOneUser(userTable);
-		roleTableRepository.createOneUser(roleTable);
+		registerService.registerOneUser(userTable, roleTable);
 
 		return "user/registerFinish";
 	}
