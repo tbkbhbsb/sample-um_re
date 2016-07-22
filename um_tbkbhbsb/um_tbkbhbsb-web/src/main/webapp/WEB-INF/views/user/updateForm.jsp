@@ -34,12 +34,12 @@
 				<td><form:label path="role">権限:</form:label></td>
 				<td><form:select path="role">
 						<c:choose>
-							<c:when test="${UpdateForm.role = 'USER'}">
+							<c:when test="${UpdateForm.role == 'USER'}">
 								<option value="">----</option>
 								<option value="USER" selected="selected">USER</option>
 								<option value="ADMIN">ADMIN</option>
 							</c:when>
-							<c:when test="${UpdateForm.role = 'ADMIN'}">
+							<c:when test="${UpdateForm.role == 'ADMIN'}">
 								<option value="">----</option>
 								<option value="USER">USER</option>
 								<option value="ADMIN" selected="selected">ADMIN</option>
