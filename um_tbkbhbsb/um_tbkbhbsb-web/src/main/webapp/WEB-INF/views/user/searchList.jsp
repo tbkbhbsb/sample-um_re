@@ -7,36 +7,18 @@
 
 <script type="text/javascript">
 
-function NextSubmit(obj){
-	if (obj.neme == "update"){
-		val = document.getElementsByName("userId");
-		var userId = null;
-		for(i=0; i<test.length; i++){
-			if(test[i].checked){
-				userId = test[i].value;
-				}
-		}
-		if(userId = null){
-			window.alert("選択されていません");
-		}
-		parm = "userId"+userId
-	    href = "${pageContext.request.contextPath}/user/update?" + parm;
-	    
-	}else if(obj.name == "delete"){
-		var userId = null;
-		for(i=0; i<test.length; i++){
-			if(test[i].checked){
-				userId = test[i].value;
-				}
-		}
-		if(userId = null){
-			window.alert("選択されていません");
-		}
-		parm = "userId"+userId
-	    href = "${pageContext.request.contextPath}/user/delete?" + parm;
+
+
+function Next(obj){
+	if (obj.name == "update"){
+		document.ListPage.action = "${pageContext.request.contextPath}/user/update?form";
+		document.ListPage.submit();
 	}
-	    location.href = href;
-	    /* return true; */
+	    
+	if(obj.name == "delete"){
+		document.ListPage.action = "${pageContext.request.contextPath}/user/delete?confirm";
+		document.ListPage.submit();
+	}
 	  }
 </script>
 
@@ -76,10 +58,10 @@ function NextSubmit(obj){
 						</tr>
 					</c:forEach>
 					<tr>
-						<td><input type="button" name="update" value="更新"
-							onClick="NextSubmit(this)" /></td>
-						<td><input type="button" name="delete" value="削除"
-							onClick="NextSubmit(this)" /></td>
+						<td><input id="update" type="button" name="update" value="更新"
+							onClick="Next(this)" /></td>
+						<td><input id="update" type="button" name="delete" value="削除"
+							onClick="Next(this)" /></td>
 					</tr>
 
 				</table>
