@@ -60,7 +60,7 @@
 				<td><form:errors path="role" /></td>
 			</tr> --%>
 			<tr>
-				<td><button type="submit" name="finish" value="">検索</button></td>
+				<td><button type="submit" name="finish" value="">登録</button></td>
 			</tr>
 		</table>
 	</form:form>
