@@ -9,14 +9,24 @@
 
     <sec:http pattern="/resources/**" security="none"/>
     <sec:http>
-        <sec:form-login/>
+        <sec:form-login always-use-default-target="true"
+        	login-page="/login" login-processing-url="/login"
+        	default-target-url="/top"
+        	authentication-failure-url="/login?error" />
         <sec:logout/>
         <sec:access-denied-handler ref="accessDeniedHandler"/>
         <sec:custom-filter ref="userIdMDCPutFilter" after="ANONYMOUS_FILTER"/>
         <sec:session-management />
     </sec:http>
 
-    <sec:authentication-manager />
+    <sec:authentication-manager>
+    	<sec:authentication-provider
+    		user-service-ref="accountDetailsService">
+    	<sec:password-encoder base64="true" hash="bcrypt"
+    		ref="passwordEncoder">
+    	</sec:password-encoder>
+    	</sec:authentication-provider>
+    </sec:authentication-manager>
 
     <!-- CSRF Protection -->
     <bean id="accessDeniedHandler"
