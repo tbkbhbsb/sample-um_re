@@ -9,6 +9,7 @@ import javax.inject.Inject;
 import org.springframework.security.crypto.password.PasswordEncoder;
 import org.springframework.stereotype.Service;
 
+import um_tbkbhbsb.domain.Form.PasswordUpdateForm;
 import um_tbkbhbsb.domain.model.RoleTable;
 import um_tbkbhbsb.domain.model.UserTable;
 import um_tbkbhbsb.domain.repository.RoleTableRepository;
@@ -35,9 +36,9 @@ public class UpdateServiceImpl implements UpdateService {
 		Date date = new Date();
 		DateFormat dateFormat = DateFormat.getDateTimeInstance(DateFormat.LONG, DateFormat.SHORT, locale);
 		String formattedDate = dateFormat.format(date);
-		
+
 		userTable.setLastUptate(formattedDate);
-		
+
 		if (userTable.getPassword().isEmpty()) {
 			userTable.setPassword(targetUser.getPassword());
 			System.out.println("pass no change");
@@ -48,6 +49,24 @@ public class UpdateServiceImpl implements UpdateService {
 
 		userTableRepository.updateOneUser(userTable);
 		roleTableRepository.updateOneUser(roleTable);
+	}
+
+	@Override
+	public void updateOneUserPassword(PasswordUpdateForm passwordUpdateForm) {
+
+		UserTable targetUser = userTableRepository.findOneByUserId(passwordUpdateForm.getUserId());
+
+		Locale locale = Locale.getDefault();
+		Date date = new Date();
+		DateFormat dateFormat = DateFormat.getDateTimeInstance(DateFormat.LONG, DateFormat.SHORT, locale);
+		String formattedDate = dateFormat.format(date);
+
+		targetUser.setPassword(passwordEncoder.encode(passwordUpdateForm.getPassword()));
+		targetUser.setState("ACTV");
+		targetUser.setLastUptate(formattedDate);
+
+		userTableRepository.updateOneUser(targetUser);
+
 	}
 
 }

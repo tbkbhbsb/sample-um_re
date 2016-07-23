@@ -12,6 +12,7 @@ import org.springframework.data.domain.Page;
 import org.springframework.data.domain.Pageable;
 import org.springframework.data.domain.Sort.Direction;
 import org.springframework.data.web.PageableDefault;
+import org.springframework.security.core.annotation.AuthenticationPrincipal;
 import org.springframework.security.crypto.password.PasswordEncoder;
 import org.springframework.stereotype.Controller;
 import org.springframework.ui.Model;
@@ -20,11 +21,14 @@ import org.springframework.validation.annotation.Validated;
 import org.springframework.web.bind.annotation.RequestMapping;
 import org.springframework.web.bind.annotation.RequestMethod;
 import org.springframework.web.bind.annotation.RequestParam;
+import org.springframework.web.servlet.ModelAndView;
 
 import um_tbkbhbsb.domain.Form.DeleteForm;
+import um_tbkbhbsb.domain.Form.PasswordUpdateForm;
 import um_tbkbhbsb.domain.Form.RegisterForm;
 import um_tbkbhbsb.domain.Form.SearchForm;
 import um_tbkbhbsb.domain.Form.UpdateForm;
+import um_tbkbhbsb.domain.model.AccountDetails;
 import um_tbkbhbsb.domain.model.RoleTable;
 import um_tbkbhbsb.domain.model.UserTable;
 import um_tbkbhbsb.domain.repository.RoleTableRepository;
@@ -84,10 +88,17 @@ public class HelloController {
 	}
 
 	@RequestMapping(value = "/top", method = { RequestMethod.GET, RequestMethod.POST })
-	public String menu() {
+	public String menu(@AuthenticationPrincipal AccountDetails accountDetails, Model model) {
 		logger.info("Welcome top." + "on hello controller");
+		
+		if (userTableRepository.findOneByUserId(accountDetails.getUsername()).getState().equals("INIT")) {
+			PasswordUpdateForm form = new PasswordUpdateForm();
+			form.setUserId(accountDetails.getUsername());
+			model.addAttribute("PasswordUpdateForm", form);
+			return "user/passchangeForm";
+		}
+		
 		return "top/menu";
-
 	}
 
 	@RequestMapping(value = "/login", method = { RequestMethod.GET, RequestMethod.POST })
@@ -285,5 +296,23 @@ public class HelloController {
 		
 		return "user/deleteFinish";
 	}
+	
+	
+//	@RequestMapping(value = "/user/passChange", params = "confirm")
+//	public String passchangeConfirm(@Validated PasswordUpdateForm form, BindingResult result, Model model) {
+//
+//		model.addAttribute("RegisterForm", form);
+//
+//		return "user/registerConfirm";
+//	}
+
+	@RequestMapping(value = "/user/passChange", params = "finish")
+	public String passchangeFinish(@Validated PasswordUpdateForm form, BindingResult result, Model model) {
+
+		updateService.updateOneUserPassword(form);
+
+		return "user/passChangeFinish";
+	}
+	
 
 }
