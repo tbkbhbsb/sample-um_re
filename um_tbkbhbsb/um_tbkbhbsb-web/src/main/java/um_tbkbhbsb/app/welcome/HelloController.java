@@ -17,11 +17,14 @@ import org.springframework.security.crypto.password.PasswordEncoder;
 import org.springframework.stereotype.Controller;
 import org.springframework.ui.Model;
 import org.springframework.validation.BindingResult;
+import org.springframework.validation.Errors;
 import org.springframework.validation.annotation.Validated;
+import org.springframework.web.bind.WebDataBinder;
+import org.springframework.web.bind.annotation.InitBinder;
+import org.springframework.web.bind.annotation.ModelAttribute;
 import org.springframework.web.bind.annotation.RequestMapping;
 import org.springframework.web.bind.annotation.RequestMethod;
 import org.springframework.web.bind.annotation.RequestParam;
-import org.springframework.web.servlet.ModelAndView;
 
 import um_tbkbhbsb.domain.Form.DeleteForm;
 import um_tbkbhbsb.domain.Form.PasswordUpdateForm;
@@ -37,6 +40,7 @@ import um_tbkbhbsb.domain.service.DeleteService;
 import um_tbkbhbsb.domain.service.RegisterService;
 import um_tbkbhbsb.domain.service.SearchService;
 import um_tbkbhbsb.domain.service.UpdateService;
+import um_tbkbhbsb.domain.validator.RegisterFormValidator;
 
 /**
  * Handles requests for the application home page.
@@ -63,12 +67,20 @@ public class HelloController {
 
 	@Inject
 	UpdateService updateService;
-	
+
 	@Inject
 	DeleteService deleteService;
-	
+
 	@Inject
 	RegisterService registerService;
+
+	@Inject
+	RegisterFormValidator registerFormValidator;
+
+	@InitBinder
+	public void initBinder(WebDataBinder binder) {
+		binder.addValidators(registerFormValidator);
+	}
 
 	/**
 	 * Simply selects the home view to render by returning its name.
@@ -90,14 +102,14 @@ public class HelloController {
 	@RequestMapping(value = "/top", method = { RequestMethod.GET, RequestMethod.POST })
 	public String menu(@AuthenticationPrincipal AccountDetails accountDetails, Model model) {
 		logger.info("Welcome top." + "on hello controller");
-		
+
 		if (userTableRepository.findOneByUserId(accountDetails.getUsername()).getState().equals("INIT")) {
 			PasswordUpdateForm form = new PasswordUpdateForm();
 			form.setUserId(accountDetails.getUsername());
 			model.addAttribute("PasswordUpdateForm", form);
 			return "user/passchangeForm";
 		}
-		
+
 		return "top/menu";
 	}
 
@@ -113,7 +125,7 @@ public class HelloController {
 	//
 
 	@RequestMapping(value = "/user/register", params = "form")
-	public String registerForm(@Validated RegisterForm form, BindingResult result, Model model) {
+	public String registerForm(@ModelAttribute("RegisterForm") RegisterForm form, Model model) {
 		logger.info("Welcome registerForm." + "on hello controller");
 
 		model.addAttribute("RegisterForm", form);
@@ -122,8 +134,15 @@ public class HelloController {
 	}
 
 	@RequestMapping(value = "/user/register", params = "confirm")
-	public String registerConfirm(@Validated RegisterForm form, BindingResult result, Model model) {
+	public String registerConfirm(@Validated @ModelAttribute("RegisterForm") RegisterForm form, BindingResult result,
+			Model model) {
 		logger.info("Welcome registerForm." + "on hello controller");
+
+		if (result.hasErrors()) {
+			logger.info("has errors");
+			model.addAttribute("RegisterForm", form);
+			return "user/registerForm";
+		}
 
 		model.addAttribute("RegisterForm", form);
 
@@ -131,10 +150,17 @@ public class HelloController {
 	}
 
 	@RequestMapping(value = "/user/register", params = "finish")
-	public String registerFinish(@Validated RegisterForm form, BindingResult result, Model model, Locale locale) {
+	public String registerFinish(@Validated @ModelAttribute("RegisterForm") RegisterForm form, BindingResult result,
+			Model model) {
 		logger.info("Welcome registerForm." + "on hello controller");
 
-		model.addAttribute("RegisterForm", form);
+		if (result.hasErrors()) {
+			logger.info("has errors");
+			// model.addAttribute("RegisterForm", form);
+			return "user/registerForm";
+		}
+
+		// model.addAttribute("RegisterForm", form);
 
 		UserTable userTable = beenMapper.map(form, UserTable.class);
 		RoleTable roleTable = beenMapper.map(form, RoleTable.class);
@@ -169,24 +195,6 @@ public class HelloController {
 
 		Page<SearchForm> page = searchService.searchUser(form, pageable);
 
-		// model.addAttribute("SearchResult", users);
-		//
-		// UserTable userTable = beenMapper.map(form, UserTable.class);
-		// RoleTable roleTable = beenMapper.map(form, RoleTable.class);
-		//
-		// logger.info(userTable.toString());
-		// logger.info(roleTable.toString());
-
-		// List<SearchForm> resultList =
-		// userTableRepository.searchUserByAndQuery(form);
-		// List<RoleTable> roleTables =
-		// roleTableRepository.searchUserByOrQuery(roleTable);
-
-		// for (UserTable userTable : userTables) {
-		// logger.info(userTable.toString());
-		// }
-
-		// model.addAttribute("SearchResult", resultList);
 		model.addAttribute("page", page);
 		model.addAttribute("criteria", form);
 
@@ -285,7 +293,7 @@ public class HelloController {
 	public String deleteFinish(@Validated DeleteForm form, BindingResult result, Model model, Locale locale) {
 		logger.info("Welcome deleteFinish." + "on hello controller");
 		logger.info(form.toString());
-		
+
 		UserTable userTable = userTableRepository.findOneByUserId(form.getUserId());
 		RoleTable roleTable = roleTableRepository.findOneByUserId(form.getUserId());
 
@@ -293,18 +301,13 @@ public class HelloController {
 		logger.info(roleTable.toString());
 
 		deleteService.deleteOneUser(userTable, roleTable);
-		
+
 		return "user/deleteFinish";
 	}
-	
-	
-//	@RequestMapping(value = "/user/passChange", params = "confirm")
-//	public String passchangeConfirm(@Validated PasswordUpdateForm form, BindingResult result, Model model) {
-//
-//		model.addAttribute("RegisterForm", form);
-//
-//		return "user/registerConfirm";
-//	}
+
+	//
+	// 初期パスワード変更
+	//
 
 	@RequestMapping(value = "/user/passChange", params = "finish")
 	public String passchangeFinish(@Validated PasswordUpdateForm form, BindingResult result, Model model) {
@@ -313,6 +316,5 @@ public class HelloController {
 
 		return "user/passChangeFinish";
 	}
-	
 
 }

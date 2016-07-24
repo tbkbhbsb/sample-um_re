@@ -3,7 +3,7 @@
 	<form:form modelAttribute="RegisterForm"
 		action="${pageContext.request.contextPath}/user/register"
 		method="post">
-
+		
 		<table>
 			<tr>
 				<td><form:label path="userId">ユーザID:</form:label></td>
@@ -60,7 +60,7 @@
 				<td><form:errors path="role" /></td>
 			</tr> --%>
 			<tr>
-				<td><button type="submit" name="finish" value="">登録</button></td>
+				<td><button type="submit" name="confirm" value="">登録</button></td>
 			</tr>
 		</table>
 	</form:form>

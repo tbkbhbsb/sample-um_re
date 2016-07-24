@@ -2,18 +2,52 @@ package um_tbkbhbsb.domain.Form;
 
 import java.io.Serializable;
 
+import javax.validation.constraints.NotNull;
+import javax.validation.constraints.Pattern;
+import javax.validation.constraints.Size;
+
+import org.hibernate.validator.constraints.NotBlank;
+
+import um_tbkbhbsb.domain.validator.DateCheck;
+
 public class RegisterForm implements Serializable{
 	
 private static final long serialVersionUID = 1L;
-	
+
+	@NotBlank
+//	@Size(min=4, max=4)
+	@Pattern(regexp = "[0-9]{4}")
 	private String userId;
+	
+	@NotBlank
+	@Size(min=1, max=50)
 	private String name;
+	
+	@NotBlank
+	@DateCheck
 	private String birthday;
+	
+	@NotBlank
+	@Size(min=1, max=100)
 	private String address;
+	
+	@NotBlank
+	@Size(min=1, max=15)
+	@Pattern(regexp = "[0-9]{1,15}")
 	private String tel;
+	
+	@NotBlank
 	private String role;
+	
+//	@NotBlank
 	private String state;
+	
+	@NotBlank
+	@Size(min=8, max=24)
 	private String password;
+	
+	@NotBlank
+	@Size(min=8, max=24)
 	private String passwordConfirm;
 	
 	

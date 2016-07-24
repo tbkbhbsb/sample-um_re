@@ -43,5 +43,6 @@
 		</table>
 	<form:hidden path="state" value="${f:h(RegisterForm.state)}"/>
 	<form:hidden path="password" value="${f:h(RegisterForm.password)}"/>
+	<form:hidden path="passwordConfirm" value="${f:h(RegisterForm.passwordConfirm)}"/>
 	</form:form>
 </div>
